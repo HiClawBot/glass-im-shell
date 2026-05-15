@@ -23,6 +23,7 @@ The package should not define install or publish lifecycle scripts. Release beha
 The GitHub Actions workflow should:
 
 - Use read-only repository contents permission.
+- Opt into the Node 24 action runtime with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true`.
 - Avoid secret-dependent verification.
 - Avoid elevated pull request workflows for untrusted changes.
 - Run `npm ci`.

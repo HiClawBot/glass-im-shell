@@ -101,6 +101,7 @@ requireIncludes("docs/FIRST_COMMIT_MANIFEST.md", [
 requireIncludes(".github/workflows/ci.yml", [
   "name: Verify",
   "permissions:\n  contents: read",
+  "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true",
   "npm ci",
   "npm run release:check",
   "npm run smoke:playwright",

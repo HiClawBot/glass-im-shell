@@ -47,6 +47,10 @@ if (!workflow.includes("permissions:\n  contents: read")) {
   failures.push("CI workflow must use read-only contents permission");
 }
 
+if (!workflow.includes("FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true")) {
+  failures.push("CI workflow must opt into Node 24 action runtime");
+}
+
 if (workflow.includes("pull_request_target")) {
   failures.push("CI workflow must not use elevated pull request workflows for untrusted changes");
 }

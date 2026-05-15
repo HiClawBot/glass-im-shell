@@ -470,6 +470,7 @@ requireIncludes(files.firstCommitPlan, [
 ]);
 
 requireIncludes(files.ci, [
+  "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true",
   "npm ci",
   "npx playwright install --with-deps chromium",
   "npm run release:check",

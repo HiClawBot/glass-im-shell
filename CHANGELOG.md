@@ -48,3 +48,4 @@ All notable project changes are recorded here.
 - Added `docs/REPOSITORY_LAUNCH_CHECKLIST.md` for first public repository launch readiness and aligned package preview expectations to 51 files.
 - Added `scripts/audit-repository.js` to automate public repository launch checks and aligned package preview expectations to 52 files.
 - Added `docs/FIRST_COMMIT_MANIFEST.md` for first public commit boundaries and aligned package preview expectations to 53 files.
+- Opted the GitHub Actions workflow into the Node 24 action runtime and added audit coverage for the setting.

@@ -1,0 +1,66 @@
+{
+  "version": "0.1.0",
+  "status": "pre-beta-boundary-map",
+  "modules": [
+    {
+      "id": "runtime",
+      "currentFile": "script.js",
+      "targetFiles": ["src/runtime/config.js", "src/runtime/state.js", "src/runtime/api.js"],
+      "owns": ["boot config", "state snapshot", "mount/configure API", "event emitter"]
+    },
+    {
+      "id": "data",
+      "currentFile": "script.js",
+      "targetFiles": ["src/data/mock-people.js", "src/data/mock-chats.js", "src/data/mock-wallet.js", "src/data/mock-social.js"],
+      "owns": ["fictional mock data", "host data merge", "i18n dictionaries"]
+    },
+    {
+      "id": "navigation",
+      "currentFile": "script.js",
+      "targetFiles": ["src/navigation/router.js", "src/navigation/views.js"],
+      "owns": ["hash routes", "view switching", "mobile detail layering"]
+    },
+    {
+      "id": "chat",
+      "currentFile": "script.js",
+      "targetFiles": ["src/features/chat/render.js", "src/features/chat/actions.js"],
+      "owns": ["conversation list", "thread rendering", "composer tools", "message actions"]
+    },
+    {
+      "id": "contacts",
+      "currentFile": "script.js",
+      "targetFiles": ["src/features/contacts/render.js", "src/features/contacts/actions.js"],
+      "owns": ["directory", "requests", "groups", "labels", "relationship controls"]
+    },
+    {
+      "id": "explore",
+      "currentFile": "script.js",
+      "targetFiles": ["src/features/explore/social.js", "src/features/explore/video.js", "src/features/explore/plugins.js"],
+      "owns": ["activity timeline", "video feed", "scanner", "nearby", "plugins", "games"]
+    },
+    {
+      "id": "wallet",
+      "currentFile": "script.js",
+      "targetFiles": ["src/features/wallet/render.js", "src/features/wallet/actions.js"],
+      "owns": ["mock crypto portfolio", "receive", "pay", "transfer", "swap"]
+    },
+    {
+      "id": "profile-settings",
+      "currentFile": "script.js",
+      "targetFiles": ["src/features/profile/render.js", "src/features/settings/render.js", "src/features/settings/actions.js"],
+      "owns": ["profile pages", "settings deep pages", "storage", "saved items", "passes", "stickers", "help"]
+    },
+    {
+      "id": "styles",
+      "currentFile": "styles.css",
+      "targetFiles": ["src/styles/tokens.css", "src/styles/shell.css", "src/styles/features.css", "src/styles/responsive.css"],
+      "owns": ["tokens", "glass material", "layout", "responsive modes", "embedded surface boundaries"]
+    },
+    {
+      "id": "release",
+      "currentFile": "scripts",
+      "targetFiles": ["scripts/audit-release.js", "scripts/audit-integrity.js", "scripts/audit-static-ui.js", "scripts/audit-architecture.js"],
+      "owns": ["release checks", "legal boundary checks", "static UI checks", "module boundary checks"]
+    }
+  ]
+}

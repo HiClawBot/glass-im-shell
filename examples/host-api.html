@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en" data-glass-surface="embedded">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass IM Shell host API example</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: #16201e;
+        background:
+          radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.82), transparent 25%),
+          radial-gradient(circle at 88% 18%, rgba(20, 184, 166, 0.22), transparent 28%),
+          linear-gradient(145deg, #d9e7e2, #f8faf7 46%, #c8d8d2);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .host-page {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 16px;
+        min-height: 100vh;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+
+      .host-panel {
+        display: grid;
+        align-content: start;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.58);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.44);
+        box-shadow: 0 24px 70px rgba(20, 35, 31, 0.16);
+        backdrop-filter: blur(24px) saturate(1.35);
+      }
+
+      .host-panel h1,
+      .host-panel h2 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .host-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .host-button {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 10px 0 32px;
+        color: #13201d;
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.58);
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .host-button::before {
+        position: absolute;
+        left: 10px;
+        width: 14px;
+        height: 14px;
+        color: #0f766e;
+        content: attr(data-symbol);
+        font-size: 14px;
+        line-height: 14px;
+      }
+
+      .host-button:hover {
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .host-state,
+      .host-log {
+        min-height: 128px;
+        max-height: 210px;
+        overflow: auto;
+        margin: 0;
+        padding: 12px;
+        color: #0f1716;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.42);
+        font: 11px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        white-space: pre-wrap;
+      }
+
+      #chat-shell {
+        --glass-shell-height: calc(100vh - 32px);
+        --glass-shell-padding: 0;
+        min-height: calc(100vh - 32px);
+      }
+
+      #chat-shell .app-shell,
+      #chat-shell .app-shell.side-collapsed {
+        grid-template-columns: 74px 338px minmax(0, 1fr);
+      }
+
+      #chat-shell .side-pane {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #eef7f4;
+          background:
+            radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.16), transparent 26%),
+            radial-gradient(circle at 88% 18%, rgba(20, 184, 166, 0.18), transparent 30%),
+            linear-gradient(145deg, #131b1e, #25302f 48%, #111719);
+        }
+
+        .host-panel,
+        .host-state,
+        .host-log,
+        .host-button {
+          color: #eef7f4;
+          border-color: rgba(255, 255, 255, 0.18);
+          background: rgba(16, 24, 27, 0.52);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .host-page {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          padding: 10px;
+        }
+
+        .host-panel {
+          order: -1;
+          max-height: 42vh;
+          overflow: auto;
+          padding: 12px;
+          border-radius: 20px;
+        }
+
+        .host-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .host-button {
+          min-height: 42px;
+          padding: 0;
+          font-size: 0;
+        }
+
+        .host-button::before {
+          position: static;
+          width: 18px;
+          height: 18px;
+          font-size: 18px;
+          line-height: 18px;
+        }
+
+        .host-state,
+        .host-log {
+          min-height: 76px;
+          max-height: 116px;
+          font-size: 10px;
+        }
+
+        #chat-shell {
+          --glass-shell-height: min(760px, calc(100vh - 20px));
+          min-height: min(760px, calc(100vh - 20px));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="host-page">
+      <div id="chat-shell"></div>
+      <aside class="host-panel" aria-label="Host integration controls">
+        <h1>Host Controls</h1>
+        <div class="host-grid">
+          <button class="host-button" type="button" data-symbol="⌂" data-host-route="view:chats" aria-label="Open chats">Chats</button>
+          <button class="host-button" type="button" data-symbol="◇" data-host-route="page:pay" aria-label="Open wallet">Wallet</button>
+          <button class="host-button" type="button" data-symbol="↗" data-host-route="page:transfer" aria-label="Open transfer">Transfer</button>
+          <button class="host-button" type="button" data-symbol="⚙" data-host-route="page:settings" aria-label="Open settings">Settings</button>
+        </div>
+        <div class="host-grid">
+          <button class="host-button" type="button" data-symbol="A" data-host-lang aria-label="Switch language">Lang</button>
+          <button class="host-button" type="button" data-symbol="◐" data-host-appearance aria-label="Cycle appearance">Mode</button>
+          <button class="host-button" type="button" data-symbol="≋" data-host-density aria-label="Toggle density">Density</button>
+          <button class="host-button" type="button" data-symbol="✦" data-host-theme="aurora" aria-label="Apply theme">Theme</button>
+        </div>
+        <h2>Runtime State</h2>
+        <pre class="host-state" data-runtime-state></pre>
+        <h2>Event Log</h2>
+        <pre class="host-log" data-event-log></pre>
+      </aside>
+    </main>
+
+    <script>
+      const eventRows = [];
+      const THEMES = {
+        default: {
+          green: "#10b981",
+          bubbleOut: "#0f7f64",
+          glass: "rgba(255,255,255,.5)"
+        },
+        aurora: {
+          green: "#14b8a6",
+          bubbleOut: "#0f766e",
+          glass: "rgba(255,255,255,.56)",
+          glassStrong: "rgba(255,255,255,.78)"
+        }
+      };
+
+      function writeState() {
+        const target = document.querySelector("[data-runtime-state]");
+        if (!target || !window.GlassIMShell) return;
+        target.textContent = JSON.stringify(window.GlassIMShell.getState(), null, 2);
+      }
+
+      function writeEvent(event) {
+        eventRows.unshift(`${new Date().toLocaleTimeString()} ${event.type} ${JSON.stringify(event.payload)}`);
+        eventRows.splice(6);
+        const target = document.querySelector("[data-event-log]");
+        if (target) target.textContent = eventRows.join("\n");
+        writeState();
+      }
+
+      window.GLASS_IM_CONFIG = {
+        root: "#chat-shell",
+        surface: "embedded",
+        lang: navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en",
+        appearance: "system",
+        density: "comfortable",
+        route: "chat:ops",
+        theme: THEMES.default,
+        persistLanguage: false,
+        persistAppearance: false,
+        data: {
+          people: {
+            self: { id: "self", name: "Mira Vale", avatar: "M", color: "#14b8a6", title: "Host user", chatId: "self-host" },
+            ops: { id: "ops", name: "Orion Desk", avatar: "O", color: "#6366f1", title: "Operations", chatId: "ops" },
+            nova: { id: "nova", name: "Nova Lane", avatar: "N", color: "#f59e0b", title: "Design partner", chatId: "nova" }
+          },
+          chats: [
+            {
+              id: "ops",
+              title: "Host Operations",
+              type: "group",
+              avatar: "O",
+              color: "#6366f1",
+              subtitle: "API-ready shell",
+              time: "09:42",
+              unread: 2,
+              pinned: true,
+              members: ["self", "ops", "nova"],
+              messages: [
+                { type: "date", text: "Today" },
+                { from: "ops", text: "Route, event, and theme hooks are connected." },
+                { from: "self", text: "Host app can own data and shell state from here." }
+              ]
+            },
+            {
+              id: "nova",
+              title: "Nova Lane",
+              type: "dm",
+              avatar: "N",
+              color: "#f59e0b",
+              subtitle: "Design partner",
+              time: "08:15",
+              members: ["self", "nova"],
+              messages: [
+                { type: "date", text: "Today" },
+                { from: "nova", text: "The embedded surface keeps host layout control." }
+              ]
+            }
+          ],
+          cryptoAssets: [
+            { symbol: "USDC", name: "USD Coin", network: "Base", amount: "8,420.00", fiat: "$8,420.00", change: "+0.01%", color: "#2563eb", allocation: "52%" },
+            { symbol: "ETH", name: "Ether", network: "Ethereum", amount: "2.84", fiat: "$9,178.16", change: "+2.4%", color: "#6366f1", allocation: "31%" },
+            { symbol: "SOL", name: "Solana", network: "Solana", amount: "64.2", fiat: "$9,744.42", change: "-0.8%", color: "#14b8a6", allocation: "17%" }
+          ],
+          walletSummary: {
+            name: "Host Treasury",
+            account: "Operations",
+            total: "$27,342.58",
+            summary: "Host-owned mock portfolio"
+          },
+          walletFlowConfig: {
+            receive: {
+              assetSymbol: "USDC",
+              address: "host-mock-usdc-receive-address",
+              addressShort: "host-usdc...receive",
+              incoming: "1 pending"
+            },
+            pay: {
+              assetSymbols: ["USDC", "ETH", "SOL"],
+              address: "host-mock-pay-recipient",
+              amount: "84.00",
+              fee: "0.01 USDC",
+              feeMeta: "Base · 2 sec",
+              available: "$8,420.00"
+            },
+            transfer: {
+              assetSymbols: ["USDC", "ETH", "SOL"],
+              amount: "42.00",
+              memo: "Host transfer memo",
+              fee: "$0.01",
+              feeMeta: "Base · 2 sec"
+            },
+            swap: {
+              fromSymbol: "USDC",
+              toSymbol: "ETH",
+              fromAmount: "84.00",
+              toAmount: "0.0260",
+              rate: "1 ETH ≈ 3,230 USDC",
+              route: ["Base", "Router", "Ethereum"],
+              slippage: "0.3%",
+              bridge: "Host route",
+              fee: "$0.64",
+              estimate: "45 sec"
+            }
+          },
+          walletTransactions: [
+            { id: "tx-host-1", type: "receive", symbol: "USDC", amount: "+1,200.00", fiat: "$1,200.00", peer: "Client escrow", status: "Settled", time: "09:12" },
+            { id: "tx-host-2", type: "transfer", symbol: "ETH", amount: "-0.20", fiat: "$646.35", peer: "Ops wallet", status: "Queued", time: "Yesterday" }
+          ],
+          walletDefiPositions: [
+            { id: "defi-host-1", assetSymbol: "USDC", name: "Operating pool", value: "$4,200.00", meta: "Mock APY 3.1%" }
+          ],
+          walletNftCollections: [
+            { id: "nft-host-1", name: "Access Keys", count: "3", floor: "0.04 ETH", color: "#14b8a6" }
+          ]
+        },
+        onEvent: writeEvent
+      };
+    </script>
+    <script src="../script.js"></script>
+    <script>
+      const themeOrder = ["default", "aurora"];
+      let themeIndex = 0;
+
+      function syncHost() {
+        writeState();
+      }
+
+      document.querySelectorAll("[data-host-route]").forEach((button) => {
+        button.addEventListener("click", () => window.GlassIMShell.navigate(button.dataset.hostRoute));
+      });
+
+      document.querySelector("[data-host-lang]").addEventListener("click", () => {
+        const next = window.GlassIMShell.getState().lang === "en" ? "zh" : "en";
+        window.GlassIMShell.setLang(next);
+        syncHost();
+      });
+
+      document.querySelector("[data-host-appearance]").addEventListener("click", () => {
+        const order = ["system", "light", "dark"];
+        const current = window.GlassIMShell.getState().appearance;
+        window.GlassIMShell.setAppearance(order[(order.indexOf(current) + 1) % order.length]);
+        syncHost();
+      });
+
+      document.querySelector("[data-host-density]").addEventListener("click", () => {
+        const next = window.GlassIMShell.getState().density === "compact" ? "comfortable" : "compact";
+        window.GlassIMShell.setDensity(next);
+        syncHost();
+      });
+
+      document.querySelector("[data-host-theme]").addEventListener("click", (event) => {
+        themeIndex = (themeIndex + 1) % themeOrder.length;
+        const selected = event.currentTarget.dataset.hostTheme || themeOrder[themeIndex];
+        window.GlassIMShell.configure({ theme: THEMES[selected] || THEMES[themeOrder[themeIndex]] });
+        syncHost();
+      });
+
+      window.GlassIMShell.configure({
+        onEvent: syncHost
+      });
+      syncHost();
+    </script>
+  </body>
+</html>

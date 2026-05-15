@@ -1,0 +1,113 @@
+{
+  "name": "glass-im-shell",
+  "version": "0.1.0",
+  "description": "Original liquid-glass IM shell UI inspired by common messaging app patterns.",
+  "main": "./script.js",
+  "browser": "./script.js",
+  "style": "./styles.css",
+  "types": "./schema.d.ts",
+  "sideEffects": [
+    "./styles.css"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./schema.d.ts",
+      "browser": "./script.js",
+      "default": "./script.js"
+    },
+    "./styles.css": "./styles.css",
+    "./schema": "./schema.d.ts",
+    "./mobile": "./mobile.html",
+    "./npm-minimal": "./examples/npm-minimal.html",
+    "./vanilla": "./examples/vanilla.html",
+    "./host-api": "./examples/host-api.html"
+  },
+  "scripts": {
+    "check": "node --check script.js",
+    "audit:manifest": "node scripts/audit-manifest.js",
+    "audit:release": "node scripts/audit-release.js",
+    "audit:integrity": "node scripts/audit-integrity.js",
+    "audit:static-ui": "node scripts/audit-static-ui.js",
+    "audit:architecture": "node scripts/audit-architecture.js",
+    "audit:package": "node scripts/audit-package.js",
+    "audit:repository": "node scripts/audit-repository.js",
+    "audit:supply-chain": "node scripts/audit-supply-chain.js",
+    "commit:plan": "node scripts/print-first-commit-files.js",
+    "smoke:playwright": "node scripts/smoke-playwright.js",
+    "serve:local": "node scripts/serve-local.js",
+    "pack:dry": "npm pack --dry-run",
+    "ci:verify": "npm run release:check && npm run smoke:playwright && npm run pack:dry",
+    "release:check": "npm run check && npm run audit:manifest && npm run audit:integrity && npm run audit:static-ui && npm run audit:architecture && npm run audit:supply-chain && npm run audit:package && npm run audit:release && npm run audit:repository"
+  },
+  "files": [
+    "index.html",
+    "mobile.html",
+    "styles.css",
+    "script.js",
+    "schema.d.ts",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "HOST_READINESS.md",
+    "INTEGRATION.md",
+    "ARCHITECTURE.md",
+    "RELEASE_CHECKLIST.md",
+    "SECURITY.md",
+    "docs/API_CONTRACT.md",
+    "docs/RELEASE_ASSETS.md",
+    "docs/BETA_READINESS_REPORT.md",
+    "docs/COMPONENT_MATRIX.md",
+    "docs/DESIGN_TOKENS.md",
+    "docs/FIRST_COMMIT_MANIFEST.md",
+    "docs/GITHUB_RELEASE_GUIDE.md",
+    "docs/HOST_DATA_OVERRIDES.md",
+    "docs/HUMAN_ACCEPTANCE_ROUTE.md",
+    "docs/LOCAL_PREVIEW.md",
+    "docs/MAINTAINER_GUIDE.md",
+    "docs/PACKAGE_METADATA.md",
+    "docs/PAGE_MATRIX.md",
+    "docs/PRE_RELEASE_ACCEPTANCE.md",
+    "docs/PUBLICATION_READINESS.md",
+    "docs/REPOSITORY_LAUNCH_CHECKLIST.md",
+    "docs/RELEASE_DRAFT.md",
+    "docs/SCREENSHOT_ACCEPTANCE_MAP.md",
+    "docs/STATE_MATRIX.md",
+    "docs/SUPPLY_CHAIN.md",
+    "docs/UI_IMPLEMENTATION_SPEC.md",
+    "docs/WALLET_IMPLEMENTATION.md",
+    "docs/assets/glass-im-shell-preview.svg",
+    "release-manifest.json",
+    "scripts/audit-release.js",
+    "scripts/audit-integrity.js",
+    "scripts/audit-manifest.js",
+    "scripts/audit-static-ui.js",
+    "scripts/audit-architecture.js",
+    "scripts/audit-package.js",
+    "scripts/audit-repository.js",
+    "scripts/audit-supply-chain.js",
+    "scripts/serve-local.js",
+    "scripts/smoke-playwright.js",
+    "examples/npm-minimal.html",
+    "examples/vanilla.html",
+    "examples/host-api.html",
+    "src/module-map.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "im",
+    "chat",
+    "ui-kit",
+    "liquid-glass",
+    "prototype"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-glass-surface="embedded">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass IM Shell npm Minimal Embed</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      body {
+        margin: 0;
+        background: #eef3f1;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .host-frame {
+        display: grid;
+        min-height: 100vh;
+        padding: 16px;
+      }
+
+      #chat-shell {
+        --glass-shell-height: min(780px, calc(100vh - 32px));
+      }
+    </style>
+  </head>
+  <body>
+    <main class="host-frame">
+      <div id="chat-shell"></div>
+    </main>
+    <script>
+      window.GLASS_IM_CONFIG = {
+        root: "#chat-shell",
+        surface: "embedded",
+        lang: "en",
+        appearance: "system",
+        route: "page:pay",
+        data: {
+          walletSummary: {
+            name: "Demo Wallet",
+            account: "Prototype",
+            total: "$1,248.00",
+            summary: "Host-provided mock portfolio"
+          },
+          cryptoAssets: [
+            { symbol: "USDC", name: "USD Coin", logo: "usdc", mark: "$", networks: ["Base"], amount: "1,248.00", fiat: "$1,248.00", change: "0.0%", color: "#2775ca" }
+          ],
+          walletFlowConfig: {
+            receive: { assetSymbol: "USDC", address: "demo-mock-receive-address", addressShort: "demo...receive", incoming: "0" },
+            pay: { assetSymbols: ["USDC"], address: "demo-mock-recipient", amount: "12.00", fee: "0.01 USDC", feeMeta: "Base · 2 sec", available: "$1,248.00" },
+            transfer: { assetSymbols: ["USDC"], amount: "12.00", memo: "Demo memo", fee: "$0.01", feeMeta: "Base · 2 sec" },
+            swap: { fromSymbol: "USDC", toSymbol: "ETH", fromAmount: "12.00", toAmount: "0.0037", rate: "1 ETH ≈ 3,230 USDC", route: ["Base", "Router", "Ethereum"], slippage: "0.3%", bridge: "Demo route", fee: "$0.12", estimate: "45 sec" }
+          }
+        },
+        onEvent(event) {
+          console.log("[GlassIM]", event.type, event.payload);
+        }
+      };
+    </script>
+    <script src="../script.js"></script>
+  </body>
+</html>

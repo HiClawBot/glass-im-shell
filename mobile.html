@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass IM Shell Mobile</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        place-items: center;
+        background:
+          linear-gradient(120deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.2)),
+          linear-gradient(160deg, #c5d3cd, #e9eee9 52%, #b5c9c0);
+      }
+
+      .device {
+        width: min(430px, 100vw);
+        height: min(932px, 100vh);
+        overflow: hidden;
+        background: #101415;
+        border: 10px solid rgba(16, 20, 21, 0.92);
+        border-radius: 44px;
+        box-shadow: 0 32px 100px rgba(18, 28, 24, 0.34);
+      }
+
+      iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 34px;
+        background: #eef3ef;
+      }
+
+      @media (max-width: 520px) {
+        .device {
+          width: 100vw;
+          height: 100vh;
+          border: 0;
+          border-radius: 0;
+        }
+
+        iframe {
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="device" aria-label="Glass IM Shell mobile preview">
+      <iframe id="mobile-frame" src="./index.html?device=mobile&v=glass-im-shell-mobile-v6" title="Glass IM Shell mobile app"></iframe>
+    </main>
+    <script>
+      (() => {
+        const frame = document.getElementById("mobile-frame");
+        const base = "./index.html?device=mobile&v=glass-im-shell-mobile-v6";
+        const syncRoute = () => {
+          frame.src = `${base}${window.location.hash || ""}`;
+        };
+        syncRoute();
+        window.addEventListener("hashchange", syncRoute);
+      })();
+    </script>
+  </body>
+</html>

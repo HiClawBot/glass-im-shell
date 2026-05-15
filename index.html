@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN" data-glass-surface="fullscreen">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass IM Shell 原型</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css?v=glass-im-shell-mobile-v5" />
+  </head>
+  <body>
+    <main class="stage" aria-label="Glass IM Shell">
+      <section class="app-shell glass-window" id="appShell" data-glass-shell>
+        <aside class="rail glass-dark" aria-label="主导航">
+          <button class="avatar self" type="button" data-open-page="profile:self" aria-label="个人资料">林</button>
+          <nav class="rail-nav" id="railNav" aria-label="一级入口"></nav>
+          <button class="rail-icon" type="button" data-open-page="settings" aria-label="设置">
+            <span class="icon gear"></span>
+          </button>
+        </aside>
+
+        <section class="list-pane glass-pane" aria-label="列表区">
+          <header class="pane-head">
+            <div>
+              <h1 id="paneTitle">消息</h1>
+              <p id="paneHint">12 条模拟会话</p>
+            </div>
+            <div class="pane-actions">
+              <button class="lang-button" id="languageButton" type="button" aria-label="Switch language">EN</button>
+              <button class="round-button" id="plusButton" type="button" aria-label="更多操作">+</button>
+            </div>
+          </header>
+
+          <div class="search-row">
+            <span class="icon search" aria-hidden="true"></span>
+            <input id="searchInput" type="search" placeholder="搜索" autocomplete="off" />
+          </div>
+
+          <div class="list-scroll" id="listContent"></div>
+        </section>
+
+        <section class="work-pane glass-pane" id="workPane" aria-label="工作区"></section>
+
+        <aside class="side-pane glass-pane" id="sidePane" aria-label="侧边详情"></aside>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="overlay" id="overlay" hidden></div>
+    <section class="sheet glass-pane" id="sheet" hidden aria-label="弹出面板"></section>
+
+    <script src="./script.js?v=glass-im-shell-mobile-v5"></script>
+  </body>
+</html>

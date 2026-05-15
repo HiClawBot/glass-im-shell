@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-glass-surface="embedded">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass IM Shell Embed Example</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.88), transparent 30%),
+          linear-gradient(145deg, #d9e2de, #f6f8f5 48%, #c8d8d2);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .host-toolbar {
+        position: fixed;
+        z-index: 30;
+        top: 14px;
+        left: 50%;
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.45);
+        box-shadow: 0 18px 50px rgba(22, 35, 31, 0.18);
+        transform: translateX(-50%);
+        backdrop-filter: blur(22px) saturate(1.35);
+      }
+
+      .host-toolbar button {
+        min-height: 34px;
+        padding: 0 12px;
+        color: #101415;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        font: inherit;
+        font-size: 12px;
+      }
+
+      @media (max-width: 760px) {
+        .host-toolbar {
+          top: auto;
+          bottom: 12px;
+          width: calc(100vw - 24px);
+          overflow-x: auto;
+          justify-content: flex-start;
+        }
+
+        .host-toolbar button {
+          flex: 0 0 auto;
+        }
+      }
+
+      #chat-shell {
+        --glass-shell-height: min(760px, calc(100vh - 24px));
+        min-height: min(760px, calc(100vh - 24px));
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="host-toolbar" aria-label="Host controls">
+      <button type="button" data-host-action="page:pay">Wallet</button>
+      <button type="button" data-host-action="page:settings">Settings</button>
+      <button type="button" data-host-lang>中文 / EN</button>
+      <button type="button" data-host-appearance>Theme</button>
+      <button type="button" data-host-density>Density</button>
+    </nav>
+    <div id="chat-shell"></div>
+    <script>
+      window.GLASS_IM_CONFIG = {
+        root: "#chat-shell",
+        surface: "embedded",
+        lang: "en",
+        appearance: "system",
+        density: "comfortable",
+        route: "page:pay",
+        theme: {
+          green: "#10b981",
+          glass: "rgba(255,255,255,.5)"
+        },
+        data: {
+          people: {
+            self: {
+              id: "self",
+              name: "Alex",
+              avatar: "A",
+              color: "#4f7cff",
+              title: "Product lead",
+              chatId: "alex_global_01",
+              region: "Berlin"
+            }
+          }
+        },
+        onEvent(event) {
+          console.log("[Glass IM Shell]", event.type, event.payload);
+        }
+      };
+    </script>
+    <script src="../script.js"></script>
+    <script>
+      document.querySelector("[data-host-lang]").addEventListener("click", () => {
+        const next = GlassIMShell.getState().lang === "en" ? "zh" : "en";
+        GlassIMShell.setLang(next);
+      });
+
+      document.querySelector("[data-host-appearance]").addEventListener("click", () => {
+        const order = ["system", "light", "dark"];
+        const current = GlassIMShell.getState().appearance;
+        GlassIMShell.setAppearance(order[(order.indexOf(current) + 1) % order.length]);
+      });
+
+      document.querySelector("[data-host-density]").addEventListener("click", () => {
+        const next = GlassIMShell.getState().density === "compact" ? "comfortable" : "compact";
+        GlassIMShell.setDensity(next);
+      });
+
+      document.querySelectorAll("[data-host-action]").forEach((button) => {
+        button.addEventListener("click", () => GlassIMShell.navigate(button.dataset.hostAction));
+      });
+    </script>
+  </body>
+</html>

@@ -104,7 +104,6 @@ requireIncludes(".github/workflows/ci.yml", [
   "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true",
   "actions/checkout@v5",
   "actions/setup-node@v6",
-  "actions/upload-artifact@v5",
   "npm ci",
   "npm run release:check",
   "npm run smoke:playwright",

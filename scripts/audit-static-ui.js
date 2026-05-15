@@ -473,13 +473,11 @@ requireIncludes(files.ci, [
   "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true",
   "actions/checkout@v5",
   "actions/setup-node@v6",
-  "actions/upload-artifact@v5",
   "npm ci",
   "npx playwright install --with-deps chromium",
   "npm run release:check",
   "npm run smoke:playwright",
   "npm pack --dry-run",
-  "output/smoke",
 ]);
 
 requireIncludes(files.gitignore, [

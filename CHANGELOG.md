@@ -50,3 +50,4 @@ All notable project changes are recorded here.
 - Added `docs/FIRST_COMMIT_MANIFEST.md` for first public commit boundaries and aligned package preview expectations to 53 files.
 - Opted the GitHub Actions workflow into the Node 24 action runtime and added audit coverage for the setting.
 - Upgraded first-party GitHub Actions to Node 24-capable major versions and locked them in supply-chain audits.
+- Removed CI screenshot artifact upload until the upload action is Node 24-native on GitHub-hosted runners.

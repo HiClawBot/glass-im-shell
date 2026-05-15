@@ -59,10 +59,13 @@ if (/secrets\./.test(workflow)) {
   failures.push("CI workflow must not require repository secrets for verification");
 }
 
+if (/actions\/upload-artifact@/.test(workflow)) {
+  failures.push("CI workflow must not use upload-artifact until it is Node 24-native");
+}
+
 for (const expected of [
   "actions/checkout@v5",
   "actions/setup-node@v6",
-  "actions/upload-artifact@v5",
   "npm ci",
   "npx playwright install --with-deps chromium",
   "npm run release:check",

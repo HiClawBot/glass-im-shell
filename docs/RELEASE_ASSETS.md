@@ -28,7 +28,7 @@ Generated files:
 
 See `docs/SCREENSHOT_ACCEPTANCE_MAP.md` for the route, smoke case, automated checks, manual review focus, and no-go conditions for each screenshot.
 
-`output/smoke/` is ignored by git. The GitHub Actions workflow uploads those files as a workflow artifact for review.
+`output/smoke/` is ignored by git. Regenerate those files locally for visual release review; CI runs the same smoke checks but does not upload screenshots while the upload action emits Node runtime warnings.
 
 ## Publishing Notes
 

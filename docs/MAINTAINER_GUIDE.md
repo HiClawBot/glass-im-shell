@@ -117,7 +117,7 @@ The CI workflow should keep these checks:
 - `npm run release:check`
 - `npm run smoke:playwright`
 - `npm pack --dry-run`
-- Smoke screenshot artifact upload.
+- Smoke screenshot generation in `output/smoke/`.
 
 When adding new public flows, extend `scripts/smoke-playwright.js` and update release docs before considering the flow release-ready.
 

@@ -46,11 +46,3 @@ jobs:
 
       - name: Package preview
         run: npm pack --dry-run
-
-      - name: Upload smoke screenshots
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: smoke-screenshots
-          path: output/smoke
-          if-no-files-found: ignore

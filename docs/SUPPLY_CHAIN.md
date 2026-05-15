@@ -24,13 +24,14 @@ The GitHub Actions workflow should:
 
 - Use read-only repository contents permission.
 - Opt into the Node 24 action runtime with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true`.
-- Use Node 24-capable first-party actions: `actions/checkout@v5`, `actions/setup-node@v6`, and `actions/upload-artifact@v5`.
+- Use Node 24-capable first-party actions: `actions/checkout@v5` and `actions/setup-node@v6`.
+- Avoid artifact upload actions until the selected upload action is Node 24-native on GitHub-hosted runners.
 - Avoid secret-dependent verification.
 - Avoid elevated pull request workflows for untrusted changes.
 - Run `npm ci`.
 - Install Chromium for Playwright smoke checks.
 - Run release audit, browser smoke, and package preview.
-- Upload smoke screenshots for review.
+- Generate smoke screenshots in `output/smoke/` for local or runner-side review.
 
 ## Package Boundary
 

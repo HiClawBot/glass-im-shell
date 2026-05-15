@@ -179,7 +179,7 @@ The smoke runner starts a static server on `5500-5509`, checks fullscreen and em
 
 ## CI
 
-The repository includes `.github/workflows/ci.yml`. It opts into the Node 24 action runtime, installs dependencies, installs Chromium for Playwright, runs `npm run release:check`, runs `npm run smoke:playwright`, runs `npm pack --dry-run`, and uploads smoke screenshots for failed review.
+The repository includes `.github/workflows/ci.yml`. It uses Node 24-capable first-party actions, installs dependencies, installs Chromium for Playwright, runs `npm run release:check`, runs `npm run smoke:playwright`, runs `npm pack --dry-run`, and uploads smoke screenshots for failed review.
 
 Run the same local sequence with:
 

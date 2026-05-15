@@ -24,6 +24,7 @@ The GitHub Actions workflow should:
 
 - Use read-only repository contents permission.
 - Opt into the Node 24 action runtime with `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true`.
+- Use Node 24-capable first-party actions: `actions/checkout@v5`, `actions/setup-node@v6`, and `actions/upload-artifact@v5`.
 - Avoid secret-dependent verification.
 - Avoid elevated pull request workflows for untrusted changes.
 - Run `npm ci`.

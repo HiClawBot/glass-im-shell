@@ -60,6 +60,9 @@ if (/secrets\./.test(workflow)) {
 }
 
 for (const expected of [
+  "actions/checkout@v5",
+  "actions/setup-node@v6",
+  "actions/upload-artifact@v5",
   "npm ci",
   "npx playwright install --with-deps chromium",
   "npm run release:check",
